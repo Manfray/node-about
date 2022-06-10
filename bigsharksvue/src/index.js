@@ -10,4 +10,5 @@ function Vue(options) {
 // _init方法是挂载在Vue原型的方法 通过引入文件的方式进行原型挂载需要传入Vue
 // 此做法有利于代码分割
 initMixin(Vue);
+window.Vue = Vue
 export default Vue;

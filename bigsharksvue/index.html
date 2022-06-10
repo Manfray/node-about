@@ -7,5 +7,19 @@
     <title>Document</title>
 </head>
 <body>
+  <div id="app"></div>
+  <script>
+    console.log('-------------------')
+    window.onload  = () => {
+      console.log(Vue)
+      console.log('-------------------')
+      new Vue({
+        el: "#app",
+        // router,
+        // store,
+        render: (h) => h(App),
+      });
+    }
+  </script>
 </body>
 </html>
