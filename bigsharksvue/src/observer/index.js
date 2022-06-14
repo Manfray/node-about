@@ -26,6 +26,15 @@ class Observer {
       observe(items[i]);
     }
   }
+  walk(data) {
+    // 对象上的所有属性依次进行观测
+    let keys = Object.keys(data);
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
+      let value = data[key];
+      defineReactive(data, key, value);
+    }
+  }
 }
 
 // Object.defineProperty数据劫持核心 兼容性在ie9以及以上

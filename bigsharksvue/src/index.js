@@ -16,4 +16,5 @@ initMixin(Vue);
 renderMixin(Vue);
 // 混入_update
 lifecycleMixin(Vue);
+window.Vue = Vue
 export default Vue;

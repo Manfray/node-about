@@ -11,14 +11,26 @@
   <script>
     console.log('-------------------')
     window.onload  = () => {
-      console.log(Vue)
-      console.log('-------------------')
-      new Vue({
+      // Vue实例化
+      let vm = new Vue({
         el: "#app",
-        // router,
-        // store,
-        render: (h) => h(App),
+        data() {
+          return {
+            a: 123,
+          };
+        },
+        // render(h) {
+        //   return h('div',{id:'a'},'hello')
+        // },
+        template: `<div id="app" class="test">hello {{a}}</div>`,
       });
+
+        // 我们在这里模拟更新
+      setTimeout(() => {
+        vm.a = 456;
+        // 此方法是刷新视图的核心
+        vm._update(vm._render());
+      }, 1000);
     }
   </script>
 </body>
