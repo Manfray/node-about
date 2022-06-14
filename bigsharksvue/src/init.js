@@ -19,6 +19,7 @@ export function initMixin(Vue) {
 
   // 这块代码在源码里面的位置其实是放在entry-runtime-with-compiler.js里面
   // 代表的是Vue源码里面包含了compile编译功能 这个和runtime-only版本需要区分开
+
   Vue.prototype.$mount = function (el) {
     const vm = this;
     const options = vm.$options;
@@ -40,5 +41,9 @@ export function initMixin(Vue) {
         options.render = render;
       }
     }
+
+    // 将当前组件实例挂载到真实的el节点上面
+    return mountComponent(vm, el);
   };
+
 }
