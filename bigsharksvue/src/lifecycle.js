@@ -6,7 +6,7 @@ export function lifecycleMixin(Vue) {
   // 把_update挂载在Vue的原型
   Vue.prototype._update = function (vnode) {
     const vm = this;
-    // patch是渲染vnode为真实dom核心
+    // ! patch是渲染vnode为真实dom核心
     vm.$el = patch(vm.$el, vnode);
   };
 }
