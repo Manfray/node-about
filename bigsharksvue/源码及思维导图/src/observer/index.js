@@ -1,9 +1,11 @@
-// src/obserber/index.js
 import { arrayMethods } from "./array";
 import Dep from "./dep";
+
 class Observer {
+  // 观测值
   constructor(value) {
-    this.dep = new Dep()
+    this.value = value;
+    this.dep = new Dep(); //当数组使用7种重写方法时  是无法进行依赖收集和派发更新的  此属性主要辅助数组更新
     Object.defineProperty(value, "__ob__", {
       //  值指代的就是Observer的实例
       value: this,
@@ -12,23 +14,19 @@ class Observer {
       writable: true,
       configurable: true,
     });
+
     if (Array.isArray(value)) {
       // 这里对数组做了额外判断
       // 通过重写数组原型方法来对数组的七种方法进行拦截
       value.__proto__ = arrayMethods;
-      // 如果数组里面还包含数组 需要递归判断
+      // 如果数组里面还包含数组 递归判断
       this.observeArray(value);
     } else {
       this.walk(value);
     }
   }
-  observeArray(items) {
-    for (let i = 0; i < items.length; i++) {
-      observe(items[i]);
-    }
-  }
   walk(data) {
-    // 对象上的所有属性依次进行观测
+    // 让对象上的所有属性依次进行观测
     let keys = Object.keys(data);
     for (let i = 0; i < keys.length; i++) {
       let key = keys[i];
@@ -36,11 +34,16 @@ class Observer {
       defineReactive(data, key, value);
     }
   }
+  observeArray(items) {
+    for (let i = 0; i < items.length; i++) {
+      observe(items[i]);
+    }
+  }
 }
-
 // Object.defineProperty数据劫持核心 兼容性在ie9以及以上
 function defineReactive(data, key, value) {
-  let childOb = observe(value); // childOb就是Observer实例
+  let childOb = observe(value); // 递归关键 --如果value还是一个对象会继续走一遍odefineReactive 层层遍历一直到value不是对象才停止
+  //   思考？如果Vue数据嵌套层级过深 >>性能会受影响
 
   let dep = new Dep(); // 为每个属性实例化一个Dep
 
@@ -66,7 +69,6 @@ function defineReactive(data, key, value) {
       return value;
     },
     set(newValue) {
-      debugger
       if (newValue === value) return;
       // 如果赋值的新值也是一个对象  需要观测
       observe(newValue);
@@ -87,12 +89,10 @@ function dependArray(value) {
     }
   }
 }
-export function observe(value) {
-  // 如果传过来的是对象或者数组 进行属性劫持
-  if (
-    Object.prototype.toString.call(value) === "[object Object]" ||
-    Array.isArray(value)
-  ) {
-    return new Observer(value);
+export function observe(data) {
+  // 递归进行属性劫持
+  if (typeof data !== "object" || data == null) {
+    return;
   }
+  return new Observer(data);
 }
