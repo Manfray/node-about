@@ -19,6 +19,8 @@ new Vue(option)两个阶段：初始化 + 执行
         - data
           - 数据代理 proxy
           - 数据劫持 defineReactive
+            - getter，会调用dep.depend方法，并通过中间变量dep.target，在watcher实例中添加deps的同时也在在dep.subs中添加watcher实例，实现了多对多的绑定
+            - setter 会调用dep.notify方法，触发watcher的update方法，也就是get方法，来渲染重新渲染组件，这里又会重新触发getter，也就在页面渲染的同时完成了新的所有对象的dep绑定以及dep和watcher之间的关系（目前问题，每次修改对象属性，都会触发setter，然后就要完成一轮页面更新，和再次实例化）
         - computed
         - watch
       - 执行$mount
@@ -26,7 +28,10 @@ new Vue(option)两个阶段：初始化 + 执行
           - 将el转化
           - => template （ parse成抽象语法树/再generate成表达式字符串（_c('div',{id:"app"},_c('div',undefined,_v("hello"+_s(name)),_c('span',undefined,_v("world"))))） ）
           - => render函数表达式（compileToFunctions），有则不转
-        - mountComponent（也就是vm.update(vm.render())）
-          - render构建的是vnode构成的vdom节点（其中包含_c/_v/_s等生成vnode方法）
-          - 向$el上放真实dom上
+        - mountComponent（核心就是vm.update(vm.render())）
+          - 实例化一个watcher，所以是一个组件一个watcher
+            - targetStack栈中push暂存实例，并赋值Dep.target
+            - render => 构建的是vnode构成的vdom节点（其中包含_c/_v/_s等生成vnode方法）
+              - 过程中会触发数据拦截里面的getter
+            - update => 在$el上放真实dom上
 

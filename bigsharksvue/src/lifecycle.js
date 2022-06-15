@@ -20,7 +20,6 @@ export function mountComponent(vm, el) {
   // 真实的el选项赋值给实例的$el属性 为之后虚拟dom产生的新的dom替换老的dom做铺垫
   vm.$el = el;
   //   _update和._render方法都是挂载在Vue原型的方法  类似_init
-  //   _update和._render方法都是挂载在Vue原型的方法  类似_init
 
   // 引入watcher的概念 这里注册一个渲染watcher 执行vm._update(vm._render())方法渲染视图
 

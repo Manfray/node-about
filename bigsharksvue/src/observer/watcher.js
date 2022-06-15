@@ -23,7 +23,7 @@ export default class Watcher {
   }
   get() {
     pushTarget(this); // 在调用方法之前先把当前watcher实例推到全局Dep.target上
-    this.getter(); //如果watcher是渲染watcher 那么就相当于执行  vm._update(vm._render()) 这个方法在render函数执行的时候会取值 从而实现依赖收集
+    this.getter(); //如果watcher是渲染watcher 那么就相当于执行  vm._update(vm._render()) 这个方法在render函数执行的时候会取值 从而绑定watcher和dep之间的多对多关系，实现依赖收集
     popTarget(); // 在调用方法之后把当前watcher实例从全局Dep.target移除
   }
   //   把dep放到deps里面 同时保证同一个dep只被保存到watcher一次  同样的  同一个watcher也只会保存在dep一次
