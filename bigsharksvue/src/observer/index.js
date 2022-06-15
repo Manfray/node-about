@@ -66,7 +66,6 @@ function defineReactive(data, key, value) {
       return value;
     },
     set(newValue) {
-      debugger
       if (newValue === value) return;
       // 如果赋值的新值也是一个对象  需要观测
       observe(newValue);
