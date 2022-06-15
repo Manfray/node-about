@@ -20,7 +20,9 @@ new Vue(option)两个阶段：初始化 + 执行
           - 数据代理 proxy
           - 数据劫持 defineReactive
             - getter，会调用dep.depend方法，并通过中间变量dep.target，在watcher实例中添加deps的同时也在在dep.subs中添加watcher实例，实现了多对多的绑定
-            - setter 会调用dep.notify方法，触发watcher的update方法，也就是get方法，来渲染重新渲染组件，这里又会重新触发getter，也就在页面渲染的同时完成了新的所有对象的dep绑定以及dep和watcher之间的关系（目前问题，每次修改对象属性，都会触发setter，然后就要完成一轮页面更新，和再次实例化）
+            - setter 会调用dep.notify方法，触发watcher的update方法，也就是get方法，来渲染重新渲染组件
+              - 异步更新队列机制，同步操作中往队列中放入去重的watcher，通过异步操作来一次性处理更新
+              - 这里又会重新触发getter，也就在页面渲染的同时完成了新的所有对象的dep绑定以及dep和watcher之间的关系
         - computed
         - watch
       - 执行$mount

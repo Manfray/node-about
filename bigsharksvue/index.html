@@ -27,8 +27,13 @@
 
         // 我们在这里模拟更新
       setTimeout(() => {
-        vm.a = 456;
-        vm.a = 789;
+        vm.a = 1;
+        // vm.$nextTick(() => {
+        //   vm.a = 2;
+        // })
+        // vm.$nextTick(() => {
+        //   vm.a = 3;
+        // })
         // 此方法是刷新视图的核心
         // vm._update(vm._render());
       }, 1000);
