@@ -1,0 +1,13 @@
+# 忽略相应文件的js格式校验，一般忽略直接引入的js库文件
+**/ztree/
+/vue.config.js
+**/service/
+scripts/
+**/ckeditor/
+**/components/lowcode
+**/libs
+**/utils/api-global.js
+**/router/formRoutes.js
+.mp242/
+src/assets/
+src/utils/*js
